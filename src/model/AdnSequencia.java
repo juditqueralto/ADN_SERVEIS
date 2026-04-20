@@ -46,11 +46,13 @@ public class AdnSequencia {
         // Validació: comprova que només hi ha A, C, G, T
         public boolean isValid() {
             if (sequencia == null) return false;
-   
-            for (int i=0; i < sequencia.length(); i++) {
-                String base = sequencia.substring(i, i + 1);
-                if (!base.equals("A") && !base.equals("C") && !base.equals("G") && !base.equals("T"))
-                    { return false;
+
+            for (int i = 0; i < sequencia.length(); i++) {
+                char base = sequencia.charAt(i);
+
+                if (base != 'A' && base != 'C' && base != 'G' && base != 'T') {
+                    System.out.println("Base invàlida detectada: " + base);
+                    return false;
                 }
             }
             return true;
