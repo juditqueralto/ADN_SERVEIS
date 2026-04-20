@@ -26,7 +26,7 @@ public class AdnCompressor {
 
         // 4. Escriure el fitxer comprimit
         AdnFileWriter writer = new AdnFileWriter();
-        writer.writeBinary(outputPath, adn, dadesComprimides);
+        writer.writeBinaryFile(outputPath, adn, dadesComprimides);
 
         System.out.println("Compressió completada correctament.");
     }
