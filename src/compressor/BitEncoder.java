@@ -34,4 +34,37 @@ public class BitEncoder {
 
         return resultat;
     }
+
+
+    public String decode(byte[] dades, int totalBases) {
+        StringBuilder sb = new StringBuilder();
+        int basesLlegides = 0;
+
+        for (int i = 0; i < dades.length; i++) {
+            byte b = dades[i];
+            
+            // Cada byte pot contenir fins a 4 bases
+            for (int j = 0; j < 4; j++) {
+                if (basesLlegides < totalBases) {
+                    
+                    // 1. Calculem quant hem de desplaçar a la dreta per posar els 
+                    //    2 bits que volem al final del byte.
+                    int desplacament = 6 - (j * 2);
+                    
+                    // 2. Desplacem i usem una màscara & 3 (binari 11) 
+                    //    per "esborrar" tota la resta de bits.
+                    int valor = (b >> desplacament) & 3;
+
+                    // 3. Traduïm el valor de 2 bits a caràcter
+                    if (valor == 0)      sb.append('A');
+                    else if (valor == 1) sb.append('C');
+                    else if (valor == 2) sb.append('G');
+                    else if (valor == 3) sb.append('T');
+                    
+                    basesLlegides++;
+                }
+            }
+        }
+        return sb.toString();
+    }
 }
