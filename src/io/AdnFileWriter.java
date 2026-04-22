@@ -4,15 +4,15 @@ import model.AdnSequencia;
 import java.io.FileOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 public class AdnFileWriter {
 
-    public void writeBinaryFile(String path, AdnSequencia adn, byte[] dades) throws IOException {
-        // Fem servir DataOutputStream perquè ens permet escriure tipus de dades
-        // primitius (int, boolean, UTF) de forma binària i neta.
+    public void writeBinaryFile(String path, AdnSequencia adn, byte[] dades, List<Integer> posicionsError) throws IOException {
+        
         try (DataOutputStream dos = new DataOutputStream(new FileOutputStream(path))) {
             
-            // 1. Escrivim si hi ha comentari i el comentari mateix
+            // 1. Comentari
             if (adn.hihaComentari()) {
                 dos.writeBoolean(true);
                 dos.writeUTF(adn.getComentari());
@@ -20,14 +20,21 @@ public class AdnFileWriter {
                 dos.writeBoolean(false);
             }
 
-            // 2. Escrivim la longitud total de la seqüència (Molt important!)
-            // Això ocupa 4 bytes al fitxer.
+            // 2. Longitud seqüència
             dos.writeInt(adn.getSequencia().length());
 
-            // 3. Escrivim el bloc de dades comprimides
+            // 3. Nombre d'errors
+            dos.writeInt(posicionsError.size());
+
+            // 4. Posicions dels errors
+            for (int pos : posicionsError) {
+                dos.writeInt(pos);
+            }
+
+            // 5. Dades comprimides
             dos.write(dades);
-            
-            dos.flush(); // Assegurem que tot s'escriu al disc
+
+            dos.flush();
         }
     }
 }

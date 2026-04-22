@@ -6,6 +6,8 @@ import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AdnDescompressor {
 
@@ -25,21 +27,33 @@ public class AdnDescompressor {
             // 3. Llegim la longitud original de la seqüència
             int longitudOriginal = dis.readInt();
 
-            // 4. Calculem quants bytes ocupen les dades comprimides
+            // 4. Llegim el nombre d'errors
+            int numErrors = dis.readInt();
+
+            // 5. Llegim les posicions dels errors
+            List<Integer> posicionsError = new ArrayList<>();
+            for (int i = 0; i < numErrors; i++) {
+                posicionsError.add(dis.readInt());
+            }
+
+            // 6. Calculem quants bytes ocupen les dades comprimides
             int nBytes = (int) Math.ceil(longitudOriginal / 4.0);
 
-            // 5. Llegim les dades comprimides
+            // 7. Llegim les dades comprimides
             byte[] dadesComprimides = new byte[nBytes];
             dis.readFully(dadesComprimides);
 
-            // 6. Descodifiquem la seqüència
+            // 8. Descodifiquem la seqüència
             BitEncoder encoder = new BitEncoder();
             String sequencia = encoder.decode(dadesComprimides, longitudOriginal);
 
-            // 7. Reconstruïm l'objecte ADN
+            // 9. Tornem a posar '*' a les posicions amb error
+            sequencia = encoder.posarAsteriscs(sequencia, posicionsError);
+
+            // 10. Reconstruïm l'objecte ADN
             AdnSequencia adn = new AdnSequencia(comentari, sequencia);
 
-            // 8. Escrivim el fitxer descomprimit en text
+            // 11. Escrivim el fitxer descomprimit en text
             try (FileWriter fw = new FileWriter(outputPath)) {
                 if (adn.hihaComentari()) {
                     fw.write(adn.getComentari());
@@ -50,6 +64,7 @@ public class AdnDescompressor {
             }
 
             System.out.println("Descompressió completada correctament.");
+            System.out.println("Nombre d'errors restaurats amb '*': " + numErrors);
         }
     }
 }
