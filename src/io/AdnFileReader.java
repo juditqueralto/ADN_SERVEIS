@@ -28,11 +28,12 @@ public class AdnFileReader {
             line = line.trim(); // eliminem espais laterals
 
 
-            // Si és línia de comentari
-            if (line.startsWith(">")) { // CERCAR SI HI HA FORMA MÉS SENZILLA DE FER AIXÒ
+           // Si és comentari → NO el modifiquem
+            if (line.startsWith(">")) {
                 comment = line;
             } else {
-                // Afegim la seqüència (pot estar en múltiples línies)
+            // Només netegem la seqüència
+                line = line.trim().toUpperCase();
                 sequenceBuilder.append(line);
             }
         }
