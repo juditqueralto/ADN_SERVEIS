@@ -26,9 +26,20 @@ public class AdnFileWriter {
             // 3. Nombre d'errors
             dos.writeInt(posicionsError.size());
 
-            // 4. Posicions dels errors
-            for (int pos : posicionsError) {
-                dos.writeInt(pos);
+            // 4. Escriure diferències entre posicions
+            int anterior = 0;
+            for (int i = 0; i < posicionsError.size(); i++) {
+                int actual = posicionsError.get(i);
+                int diferencia;
+
+                if (i == 0) {
+                    diferencia = actual; // primera posició absoluta
+                } else {
+                    diferencia = actual - anterior;
+                }
+
+                dos.writeShort(diferencia);
+                anterior = actual;
             }
 
             // 5. Dades comprimides

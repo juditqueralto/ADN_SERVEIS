@@ -30,10 +30,14 @@ public class AdnDescompressor {
             // 4. Llegim el nombre d'errors
             int numErrors = dis.readInt();
 
-            // 5. Llegim les posicions dels errors
+            // 5. Llegim diferències i reconstruïm posicions absolutes
             List<Integer> posicionsError = new ArrayList<>();
+            int acumulada = 0;
+
             for (int i = 0; i < numErrors; i++) {
-                posicionsError.add(dis.readInt());
+                int diferencia = dis.readUnsignedShort();
+                acumulada += diferencia;
+                posicionsError.add(acumulada);
             }
 
             // 6. Calculem quants bytes ocupen les dades comprimides
@@ -53,7 +57,7 @@ public class AdnDescompressor {
             // 10. Reconstruïm l'objecte ADN
             AdnSequencia adn = new AdnSequencia(comentari, sequencia);
 
-            // 11. Escrivim el fitxer descomprimit en text
+            // 11. Escrivim el fitxer descomprimit
             try (FileWriter fw = new FileWriter(outputPath)) {
                 if (adn.hihaComentari()) {
                     fw.write(adn.getComentari());
