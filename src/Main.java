@@ -10,9 +10,9 @@ public class Main {
 
     public static void main(String[] args) {
 
-        String fitxerOriginal = "sequence_adn_50k.txt";
-        String fitxerComprimit = "sequence_adn_50k.cmp";
-        String fitxerRecuperat = "sequence_adn_50k_recuperat.txt";
+        String fitxerOriginal = "sequence_adn_100.txt";
+        String fitxerComprimit = "sequence_adn_100.cmp";
+        String fitxerRecuperat = "sequence_adn_100_recuperat.txt";
 
         try {
             // 1. Comprimir

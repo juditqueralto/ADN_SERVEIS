@@ -1,0 +1,4 @@
+> seq barreja majuscules i minuscules
+aCgTaCGtACgtacGTacgTACgtaCGT
+ACgtACGTacgtACGTacgTACGTacgt
+aCGTacgtACGTacGTaCGTACgtacgt
